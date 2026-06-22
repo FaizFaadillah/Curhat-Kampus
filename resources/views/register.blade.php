@@ -11,8 +11,10 @@
 
     <section class="hero-section">
         <div class="main-container">
+            <!-- Karakter Gambar Mahasiswa (Sama Seperti Halaman Login) -->
             <img src="{{ asset('images/karakter.png') }}" alt="Karakter Mahasiswa" class="karakter-img">
 
+            <!-- Kiri: Teks Hero Banner -->
             <div class="left-section">
                 <div class="hero-text">
                     <h1 class="font-roboto">Jangan Dipendam,<br>Spill Aja Di Sini!</h1>
@@ -32,6 +34,7 @@
                 </div>
             </div>
 
+            <!-- Kanan: Form Pendaftaran Mahasiswa (Menggunakan Class login-card Biar Identik) -->
             <div class="right-section font-opensans">
                 <div class="login-card" id="register-card">
                     <div class="login-header">
@@ -41,9 +44,10 @@
                         </div>
                     </div>
 
+                    <!-- Alert Validasi Error -->
                     @if($errors->any())
                         <div class="alert-error">
-                            <ul>
+                            <ul style="margin: 0; padding-left: 15px; list-style-type: square;">
                                 @foreach($errors->all() as $error)
                                     <li>{{ $error }}</li>
                                 @endforeach
@@ -54,6 +58,7 @@
                     <form action="{{ route('register.process') }}" method="POST">
                         @csrf
 
+                        <!-- Row 1: NIM & Nama (Berjejer ke Samping) -->
                         <div class="form-row">
                             <div class="form-group">
                                 <label for="nim">Nomor Induk Mahasiswa</label>
@@ -80,6 +85,7 @@
                             </div>
                         </div>
 
+                        <!-- Row 2: Email (Full Width) -->
                         <div class="form-group">
                             <label for="email">Email</label>
                             <input
@@ -92,6 +98,7 @@
                             >
                         </div>
 
+                        <!-- Row 3: Password & Konfirmasi -->
                         <div class="form-row">
                             <div class="form-group">
                                 <label for="password">Password</label>
@@ -116,7 +123,7 @@
                             </div>
                         </div>
 
-                        <button type="submit" class="btn-login">
+                        <button type="submit" class="btn-login" style="margin-top: 15px;">
                             Daftar
                         </button>
                     </form>
@@ -129,28 +136,41 @@
         </div>
     </section>
 
-    <section id="cara-curhat" class="info-section font-poppins">
-        <h2 class="info-title">Cara Curhat</h2>
+    <!-- KUNCI PERBAIKAN: Menggunakan Grid Sesuai Struktur Halaman Utama (Fix image_718849.png) -->
+    <section class="home-lower-section">
+        <div class="home-lower-container">
+            <div class="cara-section" id="cara-curhat">
+                <h2 class="cara-title">Cara Mengirim Curhatan</h2>
+                <p class="cara-description">
+                    Sampaikan keluhan atau pengaduan kampus dengan alur yang sederhana, aman, dan mudah dipantau.
+                    Ikuti empat langkah berikut agar curhatanmu dapat diproses dengan baik.
+                </p>
 
-        <div class="cara-curhat-wrapper">
-            <div class="cara-card">
-                <h3>1. Login Akun</h3>
-                <p>Masuk menggunakan Nomor Induk Mahasiswa dan password yang sudah terdaftar.</p>
-            </div>
+                <div class="cara-steps-grid">
+                    <div class="cara-step-card">
+                        <div class="step-number">1</div>
+                        <h3>Login Akun</h3>
+                        <p>Masuk menggunakan NIM dan password agar identitas pengaduan tercatat dengan jelas.</p>
+                    </div>
 
-            <div class="cara-card">
-                <h3>2. Isi Form Curhatan</h3>
-                <p>Tulis kategori, lokasi, judul, dan detail pengaduan secara jelas.</p>
-            </div>
+                    <div class="cara-step-card">
+                        <div class="step-number">2</div>
+                        <h3>Isi Formulir</h3>
+                        <p>Lengkapi kategori, lokasi, judul, dan detail kronologi pengaduan secara ringkas.</p>
+                    </div>
 
-            <div class="cara-card">
-                <h3>3. Unggah Bukti</h3>
-                <p>Tambahkan foto, video, atau dokumen pendukung jika tersedia.</p>
-            </div>
+                    <div class="cara-step-card">
+                        <div class="step-number">3</div>
+                        <h3>Unggah Bukti</h3>
+                        <p>Tambahkan foto, video, atau dokumen pendukung agar pengaduan lebih kuat.</p>
+                    </div>
 
-            <div class="cara-card">
-                <h3>4. Pantau Status</h3>
-                <p>Cek perkembangan curhatan melalui menu Cek Curhatan.</p>
+                    <div class="cara-step-card">
+                        <div class="step-number">4</div>
+                        <h3>Kirim & Pantau</h3>
+                        <p>Kirim curhatanmu, lalu cek perkembangan status melalui menu Cek Curhatan.</p>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
