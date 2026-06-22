@@ -23,5 +23,10 @@ class AppServiceProvider extends ServiceProvider
         if (config('app.env') === 'production') {
             URL::forceScheme('https');
         }
+
+        // Otomatis membuat jembatan (symlink) storage di server cloud jika belum ada
+        if (!file_exists(public_path('storage'))) {
+            \Illuminate\Support\Facades\Artisan::call('storage:link');
+        }
     }
 }
