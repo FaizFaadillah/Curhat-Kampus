@@ -18,6 +18,10 @@ class AdminController extends Controller
         // 1. Inisialisasi query dasar beserta relasi user-nya
         $query = Curhat::with('user');
 
+        if ($request->filled('status') && $request->status !== 'Semua') {
+            $query->where('status', $request->status);
+        }
+        
         // 2. Logika penyaringan (jika tombol cari diklik dan input tidak kosong)
         if ($request->filled('search')) {
             $keyword = $request->search;
