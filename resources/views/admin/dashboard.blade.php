@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard Admin - CurhatKampus</title>
-    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/style.css') }}?v={{ time() }}">
     <style>
         /* --- UTILITY & BASE SYSTEM --- */
         body {
@@ -228,27 +228,27 @@
                     @endif
                 </form>
 
-                {{-- Navigasi Tab Filter Status --}}
+                {{-- Navigasi Tab Filter Status (SUDAH DIOPTIMASI MENGGUNAKAN VARIABEL COUNTS) --}}
                 <div class="tab-container">
                     <a href="{{ route('admin.dashboard', ['status' => 'Semua', 'search' => request('search')]) }}" 
                        class="btn-neo tab-btn {{ request('status') == 'Semua' || !request('status') ? 'active' : '' }}">
-                       🌐 Semua ({{ \App\Models\Curhat::count() }})
+                        🌐 Semua ({{ $counts->semua }})
                     </a>
                     <a href="{{ route('admin.dashboard', ['status' => 'Menunggu', 'search' => request('search')]) }}" 
                        class="btn-neo tab-btn {{ request('status') == 'Menunggu' ? 'active' : '' }}">
-                       ⏳ Menunggu ({{ \App\Models\Curhat::where('status', 'Menunggu')->count() }})
+                        ⏳ Menunggu ({{ $counts->menunggu }})
                     </a>
                     <a href="{{ route('admin.dashboard', ['status' => 'Diproses', 'search' => request('search')]) }}" 
                        class="btn-neo tab-btn {{ request('status') == 'Diproses' ? 'active' : '' }}">
-                       🔧 Diproses ({{ \App\Models\Curhat::where('status', 'Diproses')->count() }})
+                        🔧 Diproses ({{ $counts->diproses }})
                     </a>
                     <a href="{{ route('admin.dashboard', ['status' => 'Selesai', 'search' => request('search')]) }}" 
                        class="btn-neo tab-btn {{ request('status') == 'Selesai' ? 'active' : '' }}">
-                       ✅ Selesai ({{ \App\Models\Curhat::where('status', 'Selesai')->count() }})
+                        ✅ Selesai ({{ $counts->selesai }})
                     </a>
                     <a href="{{ route('admin.dashboard', ['status' => 'Ditolak', 'search' => request('search')]) }}" 
                        class="btn-neo tab-btn {{ request('status') == 'Ditolak' ? 'active' : '' }}">
-                       ❌ Ditolak ({{ \App\Models\Curhat::where('status', 'Ditolak')->count() }})
+                        ❌ Ditolak ({{ $counts->ditolak }})
                     </a>
                 </div>
 
@@ -315,7 +315,7 @@
 
                                     <div style="margin-bottom: 20px;">
                                         <label style="font-size: 11px; font-weight: 800; color: #475569; display: block; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px;">Tanggapan Admin</label>
-                                        <textarea name="catatan_admin" rows="3" placeholder="Tulis pesan tindakan..." style="font-weight: 600;"></textarea>
+                                        <textarea name="catatan_admin" rows="3" placeholder="Tulis pesan tindakan..." style="font-weight: 600;">{{ $curhat->catatan_admin }}</textarea>
                                     </div>
 
                                     <button type="submit" class="btn-neo btn-update">Simpan Perubahan</button>

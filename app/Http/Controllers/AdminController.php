@@ -10,23 +10,31 @@ use Illuminate\View\View;
 
 class AdminController extends Controller
 {
-    // Tambahkan parameter Request $request di sini untuk menangkap input pencarian
+    // Mengoptimalkan dashboard dengan sistem counter tunggal biar anti-lemot
     public function dashboard(Request $request): View
     {
         $this->ensureAdmin();
 
-        // 1. Inisialisasi query dasar beserta relasi user-nya
+        // KUNCI UTAMA: Hitung semua status SEKALIGUS dalam 1 query saja biar gak bolak-balik database
+        $counts = Curhat::selectRaw("
+            COUNT(*) as semua,
+            SUM(CASE WHEN status = 'Menunggu' THEN 1 ELSE 0 END) as menunggu,
+            SUM(CASE WHEN status = 'Diproses' THEN 1 ELSE 0 END) as diproses,
+            SUM(CASE WHEN status = 'Selesai' THEN 1 ELSE 0 END) as selesai,
+            SUM(CASE WHEN status = 'Ditolak' THEN 1 ELSE 0 END) as ditolak
+        ")->first();
+
+        // Inisialisasi query dasar beserta relasi user-nya
         $query = Curhat::with('user');
 
         if ($request->filled('status') && $request->status !== 'Semua') {
             $query->where('status', $request->status);
         }
         
-        // 2. Logika penyaringan (jika tombol cari diklik dan input tidak kosong)
+        // Logika penyaringan pencarian kata kunci
         if ($request->filled('search')) {
             $keyword = $request->search;
 
-            // Cari kata kunci yang cocok di beberapa kolom sekaligus sesuai kolom database kelompokmu
             $query->where(function($q) use ($keyword) {
                 $q->where('kode_curhat', 'LIKE', "%{$keyword}%")
                   ->orWhere('nama_lengkap', 'LIKE', "%{$keyword}%")
@@ -36,10 +44,11 @@ class AdminController extends Controller
             });
         }
 
-        // 3. Eksekusi query dengan urutan data terbaru
+        // Eksekusi query dengan urutan data terbaru
         $curhats = $query->latest()->get();
 
-        return view('admin.dashboard', compact('curhats'));
+        // Kirim $curhats dan $counts ke dalam view blade
+        return view('admin.dashboard', compact('curhats', 'counts'));
     }
 
     public function updateStatus(Request $request, Curhat $curhat): RedirectResponse
